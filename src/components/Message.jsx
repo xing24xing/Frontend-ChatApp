@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaTrash } from 'react-icons/fa'; // React icon for trash
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { BASE_URL, playNotificationSound } from '../utils/constant.js'; // Include playNotificationSound here
-import { deleteMessage } from '../redux/messageSlice'; // Import deleteMessage action
+import { BASE_URL } from '../utils/constant.js';
+import { deleteMessage } from '../redux/messageSlice';
 
 const Message = ({ message }) => {
     const [showDelete, setShowDelete] = useState(false);
@@ -20,7 +20,7 @@ const Message = ({ message }) => {
         try {
             const res = await axios.delete(`${BASE_URL}/api/v1/message/delete/${message._id}`);
             toast.success(res.data.message);
-            dispatch(deleteMessage(message._id)); // Update Redux state to remove the message
+            dispatch(deleteMessage(message._id));
             setShowDelete(false);
         } catch (error) {
             console.error("Error deleting message:", error);
@@ -45,7 +45,9 @@ const Message = ({ message }) => {
                 </div>
             </div>
             <div className="chat-header">
-                <time className="text-xs opacity-50 text-white">12:45</time>
+                <time className="text-xs opacity-50 text-white">
+                    {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </time>
             </div>
             <div className={`chat-bubble ${!isSender ? 'bg-gray-200 text-black' : 'bg-blue-500 text-white'}`}>
                 {message?.message}
@@ -63,6 +65,3 @@ const Message = ({ message }) => {
 };
 
 export default Message;
-
-
-
