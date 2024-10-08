@@ -18,7 +18,9 @@ function Login() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-   
+    setLoading(true); // Set loading state on submit
+
+    console.log("Login credentials:", user); // Log credentials
     try {
       const res = await axios.post(`${BASE_URL}/api/v1/user/login`, user, {
         headers: {
